@@ -1406,7 +1406,7 @@ input {
   position: absolute;
   z-index: 3;
   top: 22px;
-  right: -34px;
+  right: 56px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1991,7 +1991,7 @@ details[open] p {
 
   .more-brands {
     top: auto;
-    right: -34px;
+    right: 28px;
     bottom: 34px;
   }
 
@@ -2454,15 +2454,15 @@ details[open] p {
   }
 
   .more-brands {
-    right: -20px;
-    bottom: 20px;
+    right: 24px;
+    bottom: 24px;
     top: auto;
   }
 
   .more-brands-icon {
-    width: 29px;
-    height: 29px;
-    font-size: 22px;
+    width: 39px;
+    height: 39px;
+    font-size: 30px;
   }
 
   .brand-logos img:nth-child(10) {
