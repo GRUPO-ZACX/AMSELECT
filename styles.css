@@ -1341,7 +1341,7 @@ input {
 .vehicle-profile-section {
   width: 100%;
   margin: 0;
-  padding: clamp(82px, 6.1vw, 118px) 24px clamp(126px, 8vw, 156px);
+  padding: clamp(82px, 6.1vw, 118px) 24px clamp(96px, 6.4vw, 122px);
   overflow: hidden;
   background: var(--navy);
   color: var(--paper);
@@ -1431,13 +1431,13 @@ input {
 .vehicle-profile-card {
   position: relative;
   width: min(100%, 1048px);
-  min-height: clamp(304px, 20vw, 372px);
+  min-height: 0;
   display: grid;
   align-content: center;
   justify-items: center;
-  gap: clamp(42px, 3vw, 56px);
-  margin-top: clamp(60px, 4.1vw, 78px);
-  padding: clamp(78px, 5vw, 104px) clamp(54px, 5vw, 92px) clamp(92px, 6vw, 116px);
+  gap: clamp(24px, 2vw, 34px);
+  margin-top: 0;
+  padding: clamp(42px, 4vw, 66px) clamp(54px, 5vw, 92px);
   border-radius: clamp(44px, 4vw, 70px);
   background: rgba(5, 8, 13, 0.58);
   text-align: center;
@@ -1459,11 +1459,11 @@ input {
 }
 
 .quality-seal {
-  position: absolute;
-  left: 50%;
-  bottom: -54px;
+  position: relative;
+  left: auto;
+  bottom: auto;
   width: min(500px, 58vw);
-  transform: translateX(-50%);
+  transform: none;
 }
 
 .quality-seal img {
@@ -1620,30 +1620,41 @@ details[open] p {
   width: 100%;
   min-height: 483px;
   display: grid;
-  place-items: center;
+  align-items: center;
+  justify-items: end;
   margin: 0;
-  padding: 0 24px;
+  padding: 0 max(28px, calc((100vw - var(--wide)) / 2 + 42px)) 0 24px;
   overflow: hidden;
   border-radius: 0;
   background:
-    linear-gradient(rgb(24 24 31 / 0.36), rgb(24 24 31 / 0.36)),
-    url("assets/final-car-banner-no-plate-v20260919.webp") center / cover no-repeat;
+    url("assets/final-cta-bg-v20261002.webp") center / cover no-repeat;
   color: var(--ink);
 }
 
+.final-cta::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: transparent;
+  pointer-events: none;
+}
+
 .final-cta-card {
-  width: min(calc(100% - 48px), 950px);
+  position: relative;
+  z-index: 2;
+  width: min(calc(100% - 48px), 840px);
   min-height: 224px;
   display: grid;
-  grid-template-columns: minmax(250px, 335px) 390px;
+  grid-template-columns: minmax(235px, 305px) 350px;
   grid-template-areas:
     "title title"
     "copy action";
   align-items: center;
   justify-content: center;
-  column-gap: clamp(52px, 5vw, 86px);
+  column-gap: clamp(36px, 4vw, 62px);
   row-gap: 30px;
-  padding: 32px 62px 40px;
+  padding: 30px 50px 36px;
   border-radius: 46px;
   background: #eeeeef;
 }
@@ -1737,7 +1748,9 @@ details[open] p {
 }
 
 .site-footer p {
+  max-width: min(100%, 520px);
   margin: 0;
+  padding-right: 84px;
   color: rgba(255, 247, 232, 0.7);
   font-size: 13px;
   text-align: right;
@@ -1935,26 +1948,14 @@ details[open] p {
   }
 
   .final-cta {
-    justify-items: center;
-    text-align: center;
+    justify-items: end;
   }
 
   .final-cta-card {
-    width: min(calc(100% - 48px), 760px);
-    grid-template-columns: 1fr;
-    grid-template-areas:
-      "title"
-      "copy"
-      "action";
-    justify-items: center;
-    row-gap: 28px;
-    padding: 38px 48px 46px;
+    grid-template-columns: minmax(260px, 1fr) minmax(260px, 360px);
+    column-gap: 38px;
   }
 
-  .final-cta p {
-    max-width: 420px;
-    text-align: center;
-  }
 }
 
 @media (min-width: 761px) and (max-width: 1320px) {
@@ -2016,9 +2017,9 @@ details[open] p {
 
   .vehicle-profile-card {
     width: min(100%, 920px);
-    min-height: 320px;
-    margin-top: 58px;
-    padding: 76px 48px 106px;
+    min-height: 0;
+    margin-top: 0;
+    padding: 56px 48px;
     border-radius: 48px;
   }
 
@@ -2028,7 +2029,6 @@ details[open] p {
   }
 
   .quality-seal {
-    bottom: -50px;
     width: min(490px, 68vw);
   }
 }
@@ -2474,10 +2474,10 @@ details[open] p {
   }
 
   .vehicle-profile-card {
-    min-height: 360px;
-    gap: 28px;
-    margin-top: 44px;
-    padding: 52px 22px 76px;
+    min-height: 0;
+    gap: 22px;
+    margin-top: 0;
+    padding: 34px 22px;
     border-radius: 34px;
   }
 
@@ -2487,7 +2487,6 @@ details[open] p {
   }
 
   .quality-seal {
-    bottom: -38px;
     width: min(338px, calc(100vw - 36px));
   }
 
@@ -2529,9 +2528,8 @@ details[open] p {
   }
 
   .final-cta {
-    min-height: 420px;
-    padding: 42px 18px;
-    background-position: center;
+    min-height: 460px;
+    padding: 48px 22px;
   }
 
   .platforms-banner {
@@ -2541,22 +2539,34 @@ details[open] p {
   .final-cta-card {
     width: 100%;
     min-height: auto;
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "title"
+      "copy"
+      "action";
+    align-content: end;
+    justify-content: stretch;
     padding: 30px 20px 34px;
     border-radius: 30px;
-    row-gap: 24px;
+    background: #eeeeef;
+    row-gap: 18px;
   }
 
   .final-cta h2 {
     font-size: 25px;
     line-height: 1.08;
+    text-align: center;
   }
 
   .final-cta p {
+    max-width: 310px;
     font-size: 14px;
     line-height: 1.15;
+    text-align: left;
   }
 
   .button-link {
+    justify-self: end;
     width: min(100%, 344px);
     min-height: 62px;
     border-radius: 18px;
@@ -2573,10 +2583,12 @@ details[open] p {
   .site-footer {
     align-items: flex-start;
     flex-direction: column;
-    padding: 28px 18px;
+    padding: 28px 18px 88px;
   }
 
   .site-footer p {
+    max-width: calc(100% - 74px);
+    padding-right: 0;
     text-align: left;
   }
 
