@@ -973,24 +973,24 @@ input {
 }
 
 .pillar-icon-time::after {
-  background-image: url("assets/icon-hourglass.svg");
+  background-image: url("assets/icon-time-v20261002.svg");
 }
 
 .pillar-icon-security::after {
-  background-image: url("assets/icon-lock.svg");
+  background-image: url("assets/icon-security-v20261002.svg");
 }
 
 .pillar-icon-value::after {
   inset: 14px;
-  background-image: url("assets/icon-dollar.svg");
+  background-image: url("assets/icon-market-value-v20261002.png");
 }
 
 .pillar-icon-media::after {
-  background-image: url("assets/icon-camera.svg");
+  background-image: url("assets/icon-presentation-v20261002.svg");
 }
 
 .pillar-icon-drive::after {
-  background-image: url("assets/icon-steering.svg");
+  background-image: url("assets/icon-drive-v20261002.svg");
 }
 
 .pillar h3 {
@@ -1860,23 +1860,22 @@ details[open] p {
 
   .problem-image-desktop,
   .problem-image-cutout {
-    display: none;
+    display: block;
   }
 
   .problem-image-mobile {
-    display: block;
-    opacity: 1;
-    filter: none;
-    object-position: center center;
+    display: none;
   }
 
   .problem-visual::after {
-    background: transparent;
+    background:
+      linear-gradient(180deg, rgba(24, 24, 31, 0.34), rgba(24, 24, 31, 0.16) 48%, rgba(24, 24, 31, 0.3)),
+      linear-gradient(90deg, rgba(24, 24, 31, 0.06), rgba(24, 24, 31, 0.22));
   }
 
   .problem-copy {
-    top: auto;
-    bottom: clamp(42px, 10vw, 72px);
+    top: clamp(38px, 8vw, 62px);
+    bottom: auto;
     left: 8.5%;
     right: 8%;
   }
@@ -2251,23 +2250,22 @@ details[open] p {
 
   .problem-image-desktop,
   .problem-image-cutout {
-    display: none;
+    display: block;
   }
 
   .problem-image-mobile {
-    display: block;
-    opacity: 1;
-    filter: none;
-    object-position: center center;
+    display: none;
   }
 
   .problem-visual::after {
-    background: transparent;
+    background:
+      linear-gradient(180deg, rgba(24, 24, 31, 0.34), rgba(24, 24, 31, 0.16) 48%, rgba(24, 24, 31, 0.3)),
+      linear-gradient(90deg, rgba(24, 24, 31, 0.06), rgba(24, 24, 31, 0.22));
   }
 
   .problem-copy {
-    top: auto;
-    bottom: clamp(42px, 10vw, 72px);
+    top: clamp(34px, 8vw, 52px);
+    bottom: auto;
     left: 8.5%;
     right: 8%;
   }
