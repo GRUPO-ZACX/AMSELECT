@@ -222,8 +222,6 @@ input {
   font-weight: 400;
   line-height: 1.18;
   text-align: center;
-  text-decoration: underline;
-  text-underline-offset: 4px;
 }
 
 .hero-cta {
@@ -725,8 +723,8 @@ input {
 
 .problem-image-base {
   z-index: 1;
-  opacity: 0.56;
-  filter: brightness(0.72) saturate(0.78);
+  opacity: 1;
+  filter: none;
 }
 
 .problem-image-mobile {
@@ -742,8 +740,6 @@ input {
   top: 5.6%;
   left: 9.2%;
   right: 7%;
-  transform: translateY(var(--problem-copy-y, 0px));
-  will-change: transform;
 }
 
 .problem-copy h2 {
@@ -859,6 +855,10 @@ input {
 
 .problem-list p strong {
   font-weight: 700;
+}
+
+.problem-list .closing-highlight {
+  color: var(--gold-2);
 }
 
 .problem-list p:not(.closing) span {
@@ -1626,35 +1626,34 @@ details[open] p {
   padding: 0 max(28px, calc((100vw - var(--wide)) / 2 + 42px)) 0 24px;
   overflow: hidden;
   border-radius: 0;
-  background:
-    url("assets/final-cta-bg-v20261002.webp") center / cover no-repeat;
+  background: var(--navy);
   color: var(--ink);
 }
 
-.final-cta::before {
-  content: "";
+.final-cta-photo {
   position: absolute;
   inset: 0;
-  z-index: 1;
-  background: transparent;
-  pointer-events: none;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
 }
 
 .final-cta-card {
   position: relative;
   z-index: 2;
-  width: min(calc(100% - 48px), 840px);
-  min-height: 224px;
+  width: min(42%, 560px);
+  min-height: 400px;
   display: grid;
-  grid-template-columns: minmax(235px, 305px) 350px;
+  grid-template-columns: minmax(0, 1fr);
   grid-template-areas:
-    "title title"
-    "copy action";
+    "title"
+    "copy"
+    "action";
   align-items: center;
   justify-content: center;
-  column-gap: clamp(36px, 4vw, 62px);
-  row-gap: 30px;
-  padding: 30px 50px 36px;
+  row-gap: 28px;
+  padding: 46px 42px;
   border-radius: 46px;
   background: #eeeeef;
 }
@@ -1679,11 +1678,12 @@ details[open] p {
   grid-area: copy;
   align-self: center;
   width: auto;
-  max-width: 310px;
+  max-width: none;
   margin: 0;
   color: #3a3a40;
   font-size: clamp(14px, 0.9vw, 17px);
   line-height: 1.08;
+  text-align: center;
 }
 
 .final-cta p strong {
@@ -1696,8 +1696,8 @@ details[open] p {
 .button-link {
   grid-area: action;
   justify-self: center;
-  width: 340px;
-  min-height: 58px;
+  width: 100%;
+  min-height: 78px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1947,12 +1947,22 @@ details[open] p {
   }
 
   .final-cta {
-    justify-items: end;
+    justify-items: center;
+    gap: 28px;
+    padding: 0 28px 40px;
+    overflow: visible;
+  }
+
+  .final-cta-photo {
+    position: static;
+    width: calc(100% + 56px);
+    max-width: none;
+    height: clamp(280px, 42vw, 440px);
+    object-position: 35% center;
   }
 
   .final-cta-card {
-    grid-template-columns: minmax(260px, 1fr) minmax(260px, 360px);
-    column-gap: 38px;
+    width: min(100%, 720px);
   }
 
 }
@@ -2485,14 +2495,20 @@ details[open] p {
   }
 
   .quality-seal {
-    width: min(338px, calc(100vw - 36px));
+    width: min(100%, 338px);
+    min-width: 0;
+    justify-self: center;
   }
 
   .quality-seal-copy {
     left: 27%;
     right: 4%;
-    font-size: 10px;
-    line-height: 1.04;
+    font-size: clamp(8px, 2.6vw, 10px);
+    line-height: 1.15;
+  }
+
+  .quality-seal-copy span {
+    white-space: normal;
   }
 
   .faq-list {
@@ -2526,8 +2542,16 @@ details[open] p {
   }
 
   .final-cta {
-    min-height: 460px;
-    padding: 48px 22px;
+    min-height: 0;
+    gap: 24px;
+    padding: 0 18px 36px;
+  }
+
+  .final-cta-photo {
+    width: calc(100% + 36px);
+    height: auto;
+    aspect-ratio: 4 / 3;
+    object-position: 35% center;
   }
 
   .platforms-banner {

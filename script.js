@@ -40,14 +40,13 @@ const problemSection = document.querySelector(".problem");
 if (problemSection) {
   const problemList = problemSection.querySelector(".problem-list");
   const problemVisual = problemSection.querySelector("[data-problem-visual]");
-  const problemCopy = problemSection.querySelector("[data-problem-copy]");
   const problemCards = problemList ? Array.from(problemList.querySelectorAll("p")) : [];
   let parallaxFrame = 0;
 
   const updateProblemSection = () => {
     parallaxFrame = 0;
 
-    if (!problemVisual || !problemCopy) {
+    if (!problemVisual) {
       return;
     }
 
@@ -56,8 +55,6 @@ if (problemSection) {
     const visualHeight = problemVisual.getBoundingClientRect().height;
 
     if (isStackedLayout) {
-      problemCopy.style.setProperty("--problem-copy-y", "0px");
-
       problemCards.forEach((card) => {
         card.style.setProperty("--item-opacity", "1");
         card.style.setProperty("--item-y", "0px");
@@ -67,12 +64,6 @@ if (problemSection) {
 
       return;
     }
-
-    const textDistance = Math.max(sectionRect.height - visualHeight * 0.5, visualHeight * 1.25);
-    const textProgress = clamp(-sectionRect.top / textDistance);
-    const textTravel = visualHeight * 0.62;
-
-    problemCopy.style.setProperty("--problem-copy-y", `${textProgress * textTravel}px`);
 
     if (!problemList || !problemCards.length) {
       return;
