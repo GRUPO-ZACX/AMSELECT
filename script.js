@@ -95,6 +95,39 @@ if (problemSection) {
   window.addEventListener("resize", requestProblemUpdate);
 }
 
+const platformsCarousel = document.querySelector("[data-platforms-carousel]");
+
+if (platformsCarousel) {
+  const slides = Array.from(platformsCarousel.querySelectorAll("[data-platforms-slide]"));
+  let activeSlide = 0;
+  let rotationTimer = null;
+  let isVisible = false;
+
+  const syncRotation = () => {
+    window.clearInterval(rotationTimer);
+    rotationTimer = null;
+
+    if (isVisible && !document.hidden && slides.length > 1) {
+      rotationTimer = window.setInterval(() => {
+        activeSlide = (activeSlide + 1) % slides.length;
+
+        slides.forEach((slide, index) => {
+          const isActive = index === activeSlide;
+          slide.classList.toggle("is-active", isActive);
+          slide.setAttribute("aria-hidden", String(!isActive));
+        });
+      }, 2000);
+    }
+  };
+
+  document.addEventListener("visibilitychange", syncRotation);
+
+  new IntersectionObserver(([entry]) => {
+    isVisible = entry.isIntersecting && entry.intersectionRatio >= 0.2;
+    syncRotation();
+  }, { threshold: [0, 0.2] }).observe(platformsCarousel);
+}
+
 const feedbackMarquee = document.querySelector(".feedbacks-marquee");
 
 if (feedbackMarquee) {
