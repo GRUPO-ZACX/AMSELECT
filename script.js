@@ -133,6 +133,13 @@ const feedbackMarquee = document.querySelector(".feedbacks-marquee");
 if (feedbackMarquee) {
   const feedbackTrack = feedbackMarquee.querySelector(".feedbacks-track");
   const feedbackGroup = feedbackTrack?.querySelector(".feedbacks-group");
+  if (feedbackTrack && feedbackGroup) {
+    const duplicateGroup = feedbackGroup.cloneNode(true);
+    duplicateGroup.setAttribute("aria-hidden", "true");
+    duplicateGroup.inert = true;
+    feedbackTrack.append(duplicateGroup);
+    feedbackMarquee.classList.add("is-ready");
+  }
   let isFeedbackDragging = false;
   let feedbackStartX = 0;
   let feedbackStartOffset = 0;
@@ -200,5 +207,17 @@ if (feedbackMarquee) {
 
   feedbackMarquee.addEventListener("pointerup", stopFeedbackDrag);
   feedbackMarquee.addEventListener("pointercancel", stopFeedbackDrag);
+  feedbackMarquee.addEventListener("keydown", (event) => {
+    if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+
+    const card = feedbackGroup?.querySelector(".feedback-card");
+    if (!card || !feedbackGroup) return;
+
+    event.preventDefault();
+    const gap = parseFloat(window.getComputedStyle(feedbackGroup).columnGap) || 0;
+    const direction = event.key === "ArrowRight" ? -1 : 1;
+    feedbackDragOffset += direction * (card.getBoundingClientRect().width + gap);
+    normalizeFeedbackOffset();
+  });
   window.addEventListener("resize", normalizeFeedbackOffset);
 }
