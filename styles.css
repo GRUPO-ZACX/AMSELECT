@@ -1287,7 +1287,7 @@ input {
   width: 100%;
   display: grid;
   justify-items: center;
-  gap: clamp(56px, 5vw, 92px);
+  gap: clamp(36px, 3.4vw, 56px);
   overflow: hidden;
   padding: clamp(70px, 5vw, 96px) 0;
   background: var(--navy);
@@ -1354,22 +1354,23 @@ input {
 .feedbacks-group {
   display: flex;
   flex: 0 0 auto;
-  align-items: stretch;
+  align-items: flex-start;
   gap: var(--feedback-gap);
   padding-right: var(--feedback-gap);
 }
 
 .feedback-card {
+  position: relative;
   flex: 0 0 auto;
   display: flex;
   flex-direction: column;
   width: clamp(360px, 31vw, 480px);
   height: auto;
   max-width: none;
-  padding: 30px;
-  border: 1px solid #173d61;
-  border-radius: 28px;
-  background: #0a2038;
+  padding: 28px;
+  border: 1px solid #214461;
+  border-radius: 24px;
+  background: linear-gradient(145deg, #102c46, #0a2038 70%);
   color: #f6f7fb;
   text-align: left;
 }
@@ -1378,6 +1379,7 @@ input {
   display: flex;
   align-items: center;
   gap: 14px;
+  padding-right: 24px;
 }
 
 .feedback-avatar {
@@ -1411,27 +1413,35 @@ input {
 
 .feedback-stars,
 .feedback-quote-mark {
-  height: 30px;
-  margin: 22px 0 14px;
   color: #ffc444;
 }
 
 .feedback-stars {
-  font-size: 24px;
-  line-height: 30px;
+  margin: 18px 0 14px;
+  font-size: 21px;
+  line-height: 26px;
   letter-spacing: 3px;
 }
 
 .feedback-quote-mark {
+  position: absolute;
+  top: 22px;
+  right: 24px;
+  margin: 0;
   font-family: Georgia, serif;
-  font-size: 58px;
+  font-size: 48px;
   line-height: 1;
+  opacity: 0.7;
 }
 
 .feedback-quote {
-  margin: 0;
+  margin: 20px 0 0;
   font-size: 15px;
-  line-height: 1.65;
+  line-height: 1.6;
+}
+
+.feedback-stars + .feedback-quote {
+  margin-top: 0;
 }
 
 .feedback-quote p {
@@ -1442,12 +1452,45 @@ input {
   margin-top: 14px;
 }
 
+.feedback-footer {
+  margin-top: 20px;
+  padding-top: 18px;
+  border-top: 1px solid rgb(255 255 255 / 0.1);
+}
+
 .feedback-source {
-  margin: auto 0 0;
-  padding-top: 28px;
-  color: #97a9bc;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  padding: 9px 13px;
+  border: 1px solid transparent;
+  border-radius: 11px;
   font-size: 12px;
+  font-weight: 600;
   line-height: 1.4;
+}
+
+.feedback-source svg {
+  flex: 0 0 20px;
+  width: 20px;
+  height: 20px;
+}
+
+.feedback-source--instagram {
+  background: linear-gradient(115deg, #6f37b7, #b82b86 45%, #d43b55 75%, #c64c2c);
+  color: #ffffff;
+}
+
+.feedback-source--whatsapp {
+  background: #25d366;
+  color: #052e16;
+}
+
+.feedback-source--review {
+  border-color: rgb(239 212 112 / 0.22);
+  background: rgb(239 212 112 / 0.1);
+  color: var(--gold);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -2591,7 +2634,7 @@ details[open] p {
   }
 
   .feedbacks {
-    gap: 48px;
+    gap: 32px;
     padding: 58px 0;
   }
 
