@@ -1,6 +1,3 @@
-const clamp = (value, min = 0, max = 1) => Math.min(Math.max(value, min), max);
-const easeOut = (value) => 1 - Math.pow(1 - value, 3);
-
 const header = document.querySelector(".site-header");
 const menuToggle = document.querySelector("[data-menu-toggle]");
 const siteNav = document.querySelector("#site-nav");
@@ -33,66 +30,6 @@ if (header && menuToggle && siteNav) {
       setMenuOpen(false);
     }
   });
-}
-
-const problemSection = document.querySelector(".problem");
-
-if (problemSection) {
-  const problemList = problemSection.querySelector(".problem-list");
-  const problemVisual = problemSection.querySelector("[data-problem-visual]");
-  const problemCards = problemList ? Array.from(problemList.querySelectorAll("p")) : [];
-  let parallaxFrame = 0;
-
-  const updateProblemSection = () => {
-    parallaxFrame = 0;
-
-    if (!problemVisual) {
-      return;
-    }
-
-    const isStackedLayout = window.innerWidth <= 1080;
-    const sectionRect = problemSection.getBoundingClientRect();
-    const visualHeight = problemVisual.getBoundingClientRect().height;
-
-    if (isStackedLayout) {
-      problemCards.forEach((card) => {
-        card.style.setProperty("--item-opacity", "1");
-        card.style.setProperty("--item-y", "0px");
-        card.style.setProperty("--item-scale-y", "1");
-        card.style.setProperty("--item-number-scale", "1");
-      });
-
-      return;
-    }
-
-    if (!problemList || !problemCards.length) {
-      return;
-    }
-
-    const timelineStart = window.innerHeight * 0.18;
-    const timelineDistance = Math.max((sectionRect.height - visualHeight) * 0.62, visualHeight * 2.45);
-    const timelineProgress = clamp((-sectionRect.top - timelineStart) / timelineDistance);
-
-    problemCards.forEach((card, index) => {
-      const revealStart = index * 0.12;
-      const itemProgress = easeOut(clamp((timelineProgress - revealStart) / 0.2));
-
-      card.style.setProperty("--item-opacity", itemProgress.toFixed(3));
-      card.style.setProperty("--item-y", `${((1 - itemProgress) * 18).toFixed(2)}px`);
-      card.style.setProperty("--item-scale-y", (0.72 + itemProgress * 0.28).toFixed(3));
-      card.style.setProperty("--item-number-scale", (0.84 + itemProgress * 0.16).toFixed(3));
-    });
-  };
-
-  const requestProblemUpdate = () => {
-    if (!parallaxFrame) {
-      parallaxFrame = window.requestAnimationFrame(updateProblemSection);
-    }
-  };
-
-  updateProblemSection();
-  window.addEventListener("scroll", requestProblemUpdate, { passive: true });
-  window.addEventListener("resize", requestProblemUpdate);
 }
 
 const platformsCarousel = document.querySelector("[data-platforms-carousel]");
@@ -128,96 +65,88 @@ if (platformsCarousel) {
   }, { threshold: [0, 0.2] }).observe(platformsCarousel);
 }
 
-const feedbackMarquee = document.querySelector(".feedbacks-marquee");
+const feedbackCarousel = document.querySelector(".feedbacks-marquee");
 
-if (feedbackMarquee) {
-  const feedbackTrack = feedbackMarquee.querySelector(".feedbacks-track");
-  const feedbackGroup = feedbackTrack?.querySelector(".feedbacks-group");
-  if (feedbackTrack && feedbackGroup) {
-    const duplicateGroup = feedbackGroup.cloneNode(true);
-    duplicateGroup.setAttribute("aria-hidden", "true");
-    duplicateGroup.inert = true;
-    feedbackTrack.append(duplicateGroup);
-    feedbackMarquee.classList.add("is-ready");
+if (feedbackCarousel) {
+  const cards = Array.from(feedbackCarousel.querySelectorAll(".feedback-card"));
+  let activeReview = 0;
+  let reviewTimer = null;
+  let isVisible = false;
+  let isHovered = false;
+  let touchStart = null;
+
+  const showReview = (index) => {
+    activeReview = (index + cards.length) % cards.length;
+    cards.forEach((card, cardIndex) => {
+      card.hidden = cardIndex !== activeReview;
+    });
+  };
+
+  const syncReviews = () => {
+    window.clearInterval(reviewTimer);
+    reviewTimer = null;
+
+    if (isVisible && !document.hidden && !isHovered && !feedbackCarousel.contains(document.activeElement) && cards.length > 1) {
+      reviewTimer = window.setInterval(() => showReview(activeReview + 1), 7000);
+    }
+  };
+
+  feedbackCarousel.addEventListener("pointerenter", (event) => {
+    if (event.pointerType === "mouse") {
+      isHovered = true;
+      syncReviews();
+    }
+  });
+
+  feedbackCarousel.addEventListener("pointerleave", (event) => {
+    if (event.pointerType === "mouse") {
+      isHovered = false;
+      syncReviews();
+    }
+  });
+
+  feedbackCarousel.addEventListener("focusin", syncReviews);
+  feedbackCarousel.addEventListener("focusout", (event) => {
+    if (!feedbackCarousel.contains(event.relatedTarget)) {
+      window.setTimeout(syncReviews, 0);
+    }
+  });
+
+  feedbackCarousel.addEventListener("keydown", (event) => {
+    if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
+      event.preventDefault();
+      showReview(activeReview + (event.key === "ArrowRight" ? 1 : -1));
+    }
+  });
+
+  feedbackCarousel.addEventListener("pointerdown", (event) => {
+    if (event.pointerType === "touch") {
+      touchStart = { x: event.clientX, y: event.clientY };
+      feedbackCarousel.setPointerCapture(event.pointerId);
+    }
+  });
+
+  feedbackCarousel.addEventListener("pointerup", (event) => {
+    if (!touchStart) return;
+    const deltaX = event.clientX - touchStart.x;
+    const deltaY = event.clientY - touchStart.y;
+    touchStart = null;
+
+    if (Math.abs(deltaX) > 45 && Math.abs(deltaX) > Math.abs(deltaY) * 1.2) {
+      showReview(activeReview + (deltaX < 0 ? 1 : -1));
+      syncReviews();
+    }
+  });
+
+  feedbackCarousel.addEventListener("pointercancel", () => { touchStart = null; });
+  document.addEventListener("visibilitychange", syncReviews);
+
+  if (cards.length) {
+    showReview(0);
+    feedbackCarousel.classList.add("is-ready");
+    new IntersectionObserver(([entry]) => {
+      isVisible = entry.isIntersecting;
+      syncReviews();
+    }, { threshold: 0 }).observe(feedbackCarousel);
   }
-  let isFeedbackDragging = false;
-  let feedbackStartX = 0;
-  let feedbackStartOffset = 0;
-  let feedbackDragOffset = 0;
-
-  const setFeedbackOffset = () => {
-    feedbackTrack?.style.setProperty("--feedback-drag", `${feedbackDragOffset}px`);
-  };
-
-  const normalizeFeedbackOffset = () => {
-    const loopWidth = feedbackGroup?.getBoundingClientRect().width || 0;
-
-    if (!loopWidth) {
-      return;
-    }
-
-    feedbackDragOffset = ((feedbackDragOffset % loopWidth) + loopWidth) % loopWidth;
-
-    if (feedbackDragOffset > 0) {
-      feedbackDragOffset -= loopWidth;
-    }
-
-    setFeedbackOffset();
-  };
-
-  feedbackMarquee.addEventListener("dragstart", (event) => {
-    event.preventDefault();
-  });
-
-  feedbackMarquee.addEventListener("pointerdown", (event) => {
-    if (!feedbackTrack || (event.pointerType === "mouse" && event.button !== 0)) {
-      return;
-    }
-
-    isFeedbackDragging = true;
-    feedbackStartX = event.clientX;
-    feedbackStartOffset = feedbackDragOffset;
-    feedbackMarquee.classList.add("is-dragging");
-    feedbackMarquee.setPointerCapture?.(event.pointerId);
-  });
-
-  feedbackMarquee.addEventListener("pointermove", (event) => {
-    if (!isFeedbackDragging) {
-      return;
-    }
-
-    feedbackDragOffset = feedbackStartOffset + event.clientX - feedbackStartX;
-    setFeedbackOffset();
-    event.preventDefault();
-  });
-
-  const stopFeedbackDrag = (event) => {
-    if (!isFeedbackDragging) {
-      return;
-    }
-
-    isFeedbackDragging = false;
-    normalizeFeedbackOffset();
-    feedbackMarquee.classList.remove("is-dragging");
-
-    if (feedbackMarquee.hasPointerCapture?.(event.pointerId)) {
-      feedbackMarquee.releasePointerCapture(event.pointerId);
-    }
-  };
-
-  feedbackMarquee.addEventListener("pointerup", stopFeedbackDrag);
-  feedbackMarquee.addEventListener("pointercancel", stopFeedbackDrag);
-  feedbackMarquee.addEventListener("keydown", (event) => {
-    if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
-
-    const card = feedbackGroup?.querySelector(".feedback-card");
-    if (!card || !feedbackGroup) return;
-
-    event.preventDefault();
-    const gap = parseFloat(window.getComputedStyle(feedbackGroup).columnGap) || 0;
-    const direction = event.key === "ArrowRight" ? -1 : 1;
-    feedbackDragOffset += direction * (card.getBoundingClientRect().width + gap);
-    normalizeFeedbackOffset();
-  });
-  window.addEventListener("resize", normalizeFeedbackOffset);
 }
