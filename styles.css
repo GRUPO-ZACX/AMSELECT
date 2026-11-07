@@ -1377,6 +1377,10 @@ input {
   margin: 0;
 }
 
+.feedback-quote p + p {
+  margin-top: 12px;
+}
+
 .vehicle-profile-section {
   width: 100%;
   margin: 0;
