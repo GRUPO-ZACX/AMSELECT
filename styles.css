@@ -1307,25 +1307,32 @@ input {
 }
 
 .feedbacks-marquee {
-  width: min(calc(100% - 40px), 580px);
-  touch-action: pan-y;
-}
-
-.feedbacks-track,
-.feedbacks-group {
   width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-inline: 20px;
+  scroll-padding-inline: 20px;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  transition: height 180ms ease;
 }
 
-.feedbacks-group {
-  display: grid;
-  gap: 20px;
-}
-
-.feedback-card[hidden] {
+.feedbacks-marquee::-webkit-scrollbar {
   display: none;
 }
 
-.feedbacks-marquee.is-ready .feedback-card {
+.feedbacks-track {
+  width: max-content;
+}
+
+.feedbacks-group {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.feedback-card {
   animation: feedback-enter 350ms ease both;
 }
 
@@ -1336,7 +1343,8 @@ input {
 
 .feedback-card {
   flex: 0 0 auto;
-  width: 100%;
+  width: clamp(300px, 30vw, 420px);
+  scroll-snap-align: start;
   height: auto;
   padding: 26px 28px;
   border: 1px solid #113451;
@@ -2512,6 +2520,7 @@ details[open] p {
   }
 
   .feedback-card {
+    width: calc(100vw - 64px);
     padding: 24px;
   }
 
