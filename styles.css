@@ -1782,9 +1782,9 @@ details[open] p {
 }
 
 .site-footer {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   align-items: center;
-  justify-content: space-between;
   gap: 24px;
   padding: 28px max(32px, calc((100vw - var(--wide)) / 2));
   background: var(--navy);
@@ -1799,12 +1799,36 @@ details[open] p {
 }
 
 .site-footer p {
-  max-width: min(100%, 520px);
+  justify-self: end;
+  max-width: 360px;
   margin: 0;
   padding-right: 84px;
   color: rgba(255, 247, 232, 0.7);
   font-size: 13px;
   text-align: right;
+}
+
+.footer-instagram {
+  display: inline-flex;
+  align-items: center;
+  justify-self: center;
+  gap: 9px;
+  min-height: 44px;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.footer-instagram:hover span,
+.footer-instagram:focus-visible span {
+  text-decoration: underline;
+  text-underline-offset: 5px;
+}
+
+.footer-instagram svg {
+  width: 30px;
+  height: 30px;
+  flex: 0 0 30px;
 }
 
 .whatsapp-float {
@@ -2727,15 +2751,31 @@ details[open] p {
   }
 
   .site-footer {
-    align-items: flex-start;
-    flex-direction: column;
+    grid-template-columns: 1fr;
+    justify-items: center;
+    gap: 16px;
     padding: 28px 18px 88px;
   }
 
+  .footer-logo {
+    object-position: center;
+  }
+
+  .footer-instagram {
+    font-size: 16px;
+  }
+
+  .footer-instagram svg {
+    width: 30px;
+    height: 30px;
+    flex-basis: 30px;
+  }
+
   .site-footer p {
-    max-width: calc(100% - 74px);
+    justify-self: center;
+    max-width: 300px;
     padding-right: 0;
-    text-align: left;
+    text-align: center;
   }
 
   .whatsapp-float {
